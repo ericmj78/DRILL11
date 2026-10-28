@@ -24,6 +24,8 @@ class Boy:
             transitions=[
                 {'trigger': 'start_auto_run', 'source': 'IDLE',
                  'dest': 'AUTO_RUN', 'after': self.auto_run.enter},
+                {'trigger': 'finish_auto_run', 'source': 'AUTO_RUN',
+                 'dest': 'IDLE', 'after': 'start_idle'},
                 {'trigger': 'fall_asleep', 'source': 'IDLE', 'dest': 'SLEEP'},
                 {'trigger': 'wake_up', 'source': 'SLEEP', 'dest': 'IDLE',
                  'after': 'start_idle'},

@@ -20,6 +20,9 @@ class AutoRun:
         self.boy.x = max(half_width, min(self.boy.x, get_canvas_width() - half_width))
 
     def update(self):
+        if get_time() - self.started_at >= self.DURATION:
+            self.boy.finish_auto_run()
+            return
         self.boy.frame = (self.boy.frame + 1) % 8
         half_width = 100 * self.SCALE / 2
         left, right = half_width, get_canvas_width() - half_width
