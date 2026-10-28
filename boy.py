@@ -29,7 +29,7 @@ class Boy:
                 {'trigger': 'fall_asleep', 'source': 'IDLE', 'dest': 'SLEEP'},
                 {'trigger': 'wake_up', 'source': 'SLEEP', 'dest': 'IDLE',
                  'after': 'start_idle'},
-                {'trigger': 'start_running', 'source': ['IDLE', 'SLEEP'],
+                {'trigger': 'start_running', 'source': ['IDLE', 'SLEEP', 'AUTO_RUN'],
                  'dest': 'RUN', 'after': 'start_run'},
                 {'trigger': 'stop_running', 'source': 'RUN', 'dest': 'IDLE',
                  'after': 'start_idle'},
@@ -54,9 +54,6 @@ class Boy:
         if event.type == SDL_KEYDOWN and event.key == SDLK_a:
             if self.state == 'IDLE' and not getattr(event, 'repeat', 0):
                 self.start_auto_run()
-            return
-
-        if self.state == 'AUTO_RUN':
             return
 
         if event.key in (SDLK_LEFT, SDLK_RIGHT):
