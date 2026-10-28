@@ -63,6 +63,37 @@ class AutoRunTests(unittest.TestCase):
         self.assertEqual(len(self.draws[-1]), 6)
         self.assertEqual(self.draws[-1][2:4], (100, 100))
 
+    def test_entry_remembers_facing_and_clamps_enlarged_body(self):
+        self.boy.face_dir = -1
+        self.boy.x = 50
+        self.activate()
+        self.assertEqual(self.boy.x, 75)
+        self.assertEqual(self.boy.auto_run.direction, -1)
+
+    def test_right_edge_reverses_and_then_moves_left(self):
+        self.activate()
+        self.boy.x = 724
+        self.boy.update()
+        self.assertEqual((self.boy.x, self.boy.face_dir), (725, -1))
+        self.boy.update()
+        self.assertEqual(self.boy.x, 719)
+
+    def test_left_edge_reverses_and_then_moves_right(self):
+        self.boy.face_dir = -1
+        self.activate()
+        self.boy.x = 76
+        self.boy.update()
+        self.assertEqual((self.boy.x, self.boy.face_dir), (75, 1))
+        self.boy.update()
+        self.assertEqual(self.boy.x, 81)
+
+    def test_repeated_bounces_keep_the_enlarged_sprite_on_screen(self):
+        self.activate()
+        for _ in range(1000):
+            self.boy.update()
+            self.assertGreaterEqual(self.boy.x - 75, 0)
+            self.assertLessEqual(self.boy.x + 75, 800)
+
 
 
 if __name__ == '__main__':
