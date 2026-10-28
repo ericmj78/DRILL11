@@ -1,0 +1,15 @@
+stateDiagram-v2
+    [*] --> IDLE
+    IDLE --> SLEEP: 5초 경과
+    SLEEP --> IDLE: SPACE 누름
+    IDLE --> RUN: 좌우 방향키 누름
+    SLEEP --> RUN: 좌우 방향키 누름
+    RUN --> IDLE: 방향키 모두 뗌
+    IDLE --> AUTO_RUN: A 누름
+    AUTO_RUN --> IDLE: 5초 경과
+    AUTO_RUN --> RUN: 방향키 누름 / 원래 크기와 속도 복구
+    note right of AUTO_RUN
+        AutoRun 상태 클래스
+        일반 RUN의 2배 속도, 1.5배 크기
+        양 끝에서 방향 자동 반전 (상태 유지)
+    end note
