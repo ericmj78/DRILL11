@@ -3,7 +3,7 @@ from pico2d import get_time, get_canvas_width
 
 class AutoRun:
     SPEED = 6
-    SCALE = 1.0
+    SCALE = 1.5
     DURATION = 5.0
 
     def __init__(self, boy):
