@@ -112,6 +112,46 @@ class AutoRunTests(unittest.TestCase):
         self.boy.update()
         self.assertEqual(self.boy.state, 'SLEEP')
 
+    def test_either_arrow_cancels_in_the_pressed_direction(self):
+        for key, direction in [(pico.SDLK_LEFT, -1), (pico.SDLK_RIGHT, 1)]:
+            with self.subTest(direction=direction):
+                self.boy = boy_module.Boy()
+                self.activate()
+                self.key(key)
+                self.assertEqual(self.boy.state, 'RUN')
+                self.assertEqual(self.boy.dir, direction)
+                self.key(key, down=False)
+                self.assertEqual(self.boy.state, 'IDLE')
+
+    def test_a_is_ignored_outside_idle(self):
+        self.key(pico.SDLK_RIGHT)
+        self.key(pico.SDLK_a)
+        self.assertEqual(self.boy.state, 'RUN')
+        self.key(pico.SDLK_RIGHT, down=False)
+        self.now = 5.0
+        self.boy.update()
+        self.key(pico.SDLK_a)
+        self.assertEqual(self.boy.state, 'SLEEP')
+
+    def test_a_key_repeat_does_not_restart_after_timeout(self):
+        self.activate()
+        self.now = 5.0
+        self.boy.update()
+        self.key(pico.SDLK_a, repeat=1)
+        self.assertEqual(self.boy.state, 'IDLE')
+
+    def test_sleep_and_overlapping_arrow_controls_are_preserved(self):
+        self.now = 5.0
+        self.boy.update()
+        self.assertEqual(self.boy.state, 'SLEEP')
+        self.key(pico.SDLK_SPACE)
+        self.assertEqual(self.boy.state, 'IDLE')
+        self.key(pico.SDLK_LEFT)
+        self.key(pico.SDLK_RIGHT)
+        self.key(pico.SDLK_RIGHT, down=False)
+        self.assertEqual((self.boy.state, self.boy.dir), ('RUN', -1))
+        self.key(pico.SDLK_LEFT, down=False)
+        self.assertEqual(self.boy.state, 'IDLE')
 
 
 if __name__ == '__main__':
