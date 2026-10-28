@@ -27,8 +27,9 @@ class AutoRun:
         if self.boy.x >= right:
             self.boy.x = right
             self.direction = -1
-        else:
-            self.boy.x = max(left, self.boy.x)
+        elif self.boy.x <= left:
+            self.boy.x = left
+            self.direction = 1
         self.boy.face_dir = self.direction
 
     def draw(self):
