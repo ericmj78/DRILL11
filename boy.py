@@ -41,6 +41,7 @@ class Boy:
 
     def start_idle(self):
         self.frame = 0
+        self.dir = 0
         self.idle_start_time = get_time()
 
     def start_run(self):
