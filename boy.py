@@ -48,6 +48,11 @@ class Boy:
         if event.type not in (SDL_KEYDOWN, SDL_KEYUP):
             return
 
+        if event.type == SDL_KEYDOWN and event.key == SDLK_a:
+            if self.state == 'IDLE' and not getattr(event, 'repeat', 0):
+                self.start_auto_run()
+            return
+
         if self.state == 'AUTO_RUN':
             return
 
