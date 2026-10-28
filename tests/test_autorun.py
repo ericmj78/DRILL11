@@ -94,6 +94,24 @@ class AutoRunTests(unittest.TestCase):
             self.assertGreaterEqual(self.boy.x - 75, 0)
             self.assertLessEqual(self.boy.x + 75, 800)
 
+    def test_timeout_at_five_seconds_and_fresh_idle_timer(self):
+        self.activate()
+        self.now = 4.999
+        self.boy.update()
+        self.assertEqual(self.boy.state, 'AUTO_RUN')
+        self.now = 5.0
+        self.boy.update()
+        self.assertEqual(self.boy.state, 'IDLE')
+        self.assertEqual(self.boy.idle_start_time, 5.0)
+        self.boy.draw()
+        self.assertEqual(len(self.draws[-1]), 6)
+        self.now = 9.999
+        self.boy.update()
+        self.assertEqual(self.boy.state, 'IDLE')
+        self.now = 10.0
+        self.boy.update()
+        self.assertEqual(self.boy.state, 'SLEEP')
+
 
 
 if __name__ == '__main__':
