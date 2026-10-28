@@ -22,10 +22,14 @@ class AutoRun:
     def update(self):
         self.boy.frame = (self.boy.frame + 1) % 8
         half_width = 100 * self.SCALE / 2
-        self.boy.x = max(
-            half_width,
-            min(self.boy.x + self.direction * self.SPEED, get_canvas_width() - half_width),
-        )
+        left, right = half_width, get_canvas_width() - half_width
+        self.boy.x += self.direction * self.SPEED
+        if self.boy.x >= right:
+            self.boy.x = right
+            self.direction = -1
+        else:
+            self.boy.x = max(left, self.boy.x)
+        self.boy.face_dir = self.direction
 
     def draw(self):
         size = int(100 * self.SCALE)
